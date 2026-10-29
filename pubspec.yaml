@@ -1,0 +1,28 @@
+name: caesiumwalls
+description: Generative wallpaper creator.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dynamic_color: ^1.6.9
+  flutter_animate: ^4.5.0
+  gal: ^2.1.1
+  async_wallpaper: ^2.0.1
+  path_provider: ^2.1.2
+
+dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
+
+flutter:
+  uses-material-design: true
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "icon.png"
+  min_sdk_size: 21
