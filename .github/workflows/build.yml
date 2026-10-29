@@ -17,8 +17,9 @@ jobs:
       # 2. Change the homescreen name to CaesiumWalls
       - run: sed -i 's/android:label="caesiumwalls"/android:label="CaesiumWalls"/g' android/app/src/main/AndroidManifest.xml
       
-      # 3. Patch legacy plugins missing the namespace property
+      # 3. Patch legacy plugins (Namespace fix + JVM Compatibility bypass)
       - run: |
+          echo "kotlin.jvm.target.validation.mode=warning" >> android/gradle.properties
           cat << 'EOF' >> android/build.gradle
           
           subprojects {
