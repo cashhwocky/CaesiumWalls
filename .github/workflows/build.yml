@@ -1,0 +1,32 @@
+name: Build CaesiumWalls
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      
+      # 1. Create the missing Android system files
+      - run: flutter create --project-name caesiumwalls --org com.alexdesrosier .
+      
+      # 2. Change the homescreen name to CaesiumWalls
+      - run: sed -i 's/android:label="caesiumwalls"/android:label="CaesiumWalls"/g' android/app/src/main/AndroidManifest.xml
+      
+      # 3. Generate a custom app icon (AMOLED Black background with a purple "CW") so you don't have to make one
+      - run: sudo apt-get update && sudo apt-get install -y imagemagick
+      - run: convert -size 512x512 canvas:#000000 -fill "#c488ff" -pointsize 200 -gravity center -draw "text 0,0 'CW'" icon.png
+      
+      # 4. Inject the icon, get packages, and build the APK
+      - run: flutter pub get
+      - run: dart run flutter_launcher_icons
+      - run: flutter build apk --release
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          name: CaesiumWalls-Release
+          path: build/app/outputs/flutter-apk/app-release.apk
