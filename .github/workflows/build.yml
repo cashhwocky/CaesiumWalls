@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
@@ -17,7 +17,7 @@ jobs:
       # 2. Change the homescreen name to CaesiumWalls
       - run: sed -i 's/android:label="caesiumwalls"/android:label="CaesiumWalls"/g' android/app/src/main/AndroidManifest.xml
       
-      # 3. Generate a custom app icon (AMOLED Black background with a purple "CW") so you don't have to make one
+      # 3. Generate a custom app icon (AMOLED Black background with a purple "CW")
       - run: sudo apt-get update && sudo apt-get install -y imagemagick
       - run: convert -size 512x512 canvas:#000000 -fill "#c488ff" -pointsize 200 -gravity center -draw "text 0,0 'CW'" icon.png
       
@@ -26,7 +26,7 @@ jobs:
       - run: dart run flutter_launcher_icons
       - run: flutter build apk --release
       
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: CaesiumWalls-Release
           path: build/app/outputs/flutter-apk/app-release.apk
