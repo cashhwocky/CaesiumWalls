@@ -11,24 +11,22 @@ jobs:
         with:
           channel: 'stable'
       
-      # 1. Create the missing Android system files
       - run: flutter create --project-name caesiumwalls --org com.alexdesrosier .
       
-      # 2. Change homescreen name & update minSdk to 24 (handling the new .kts format)
       - run: |
           sed -i 's/android:label="caesiumwalls"/android:label="CaesiumWalls"/g' android/app/src/main/AndroidManifest.xml
           sed -i 's/flutter.minSdkVersion/24/g' android/app/build.gradle.kts
           
-      # 3. Generate a custom app icon
       - run: sudo apt-get update && sudo apt-get install -y imagemagick
-      - run: convert -size 512x512 canvas:#000000 -fill "#c488ff" -pointsize 200 -gravity center -draw "text 0,0 'CW'" icon.png
+      - run: |
+          convert -size 512x512 canvas:#000000 -fill "#c488ff" -pointsize 200 -gravity center -draw "text 0,0 'CW'" icon.png
+          convert -size 512x512 canvas:none -fill "#c488ff" -pointsize 200 -gravity center -draw "text 0,0 'CW'" icon_foreground.png
       
-      # 4. Inject the icon, get packages, and build the APK
       - run: flutter pub get
       - run: dart run flutter_launcher_icons
-      - run: flutter build apk --release
+      - run: flutter build apk --debug
       
       - uses: actions/upload-artifact@v4
         with:
-          name: CaesiumWalls-Release
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: CaesiumWalls-Debug
+          path: build/app/outputs/flutter-apk/app-debug.apk
