@@ -3,6 +3,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const CaesiumWallsApp());
 }
 
@@ -13,7 +14,6 @@ class CaesiumWallsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
       builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        // Apply the system wallpaper colors, fallback to purple if none found
         ColorScheme darkColorScheme = darkDynamic?.harmonized() ?? 
           ColorScheme.fromSeed(seedColor: Colors.deepPurple, brightness: Brightness.dark);
 
@@ -22,7 +22,7 @@ class CaesiumWallsApp extends StatelessWidget {
           theme: ThemeData(
             useMaterial3: true,
             colorScheme: darkColorScheme,
-            scaffoldBackgroundColor: Colors.black, // Pure AMOLED Black
+            scaffoldBackgroundColor: Colors.black, 
           ),
           home: const WallpaperGridScreen(),
         );
@@ -74,7 +74,6 @@ class WallpaperGridScreen extends StatelessWidget {
                       ),
                     ),
                   )
-                  // The scroll pop-up animations
                   .animate()
                   .scale(
                     delay: Duration(milliseconds: (index % 6) * 60),
@@ -86,7 +85,7 @@ class WallpaperGridScreen extends StatelessWidget {
                     duration: const Duration(milliseconds: 500),
                   );
                 },
-                childCount: 30, // Number of placeholders
+                childCount: 30, 
               ),
             ),
           ),
